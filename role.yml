@@ -1,0 +1,12 @@
+name: role_name
+
+env_run_lists:
+  env_production:
+  - recipe[common]
+  - recipe[cookbook]
+
+default_attributes:
+  cookbook:
+    config:
+      bind_to: '<%= get_ipaddress("eth1") %>:80'
+      kafka_address: '<%= node[:cookbook][:kafka_address][ node.fqdn ].map {|ip| "#{ip}:9092" } %>'
