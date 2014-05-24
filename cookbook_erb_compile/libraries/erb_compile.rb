@@ -1,17 +1,17 @@
 require 'ostruct'
 
-module ErbCompileWithClass2
-  def erb_compile_with_class2(obj)
+module ErbCompile
+  def erb_compile(obj)
     case
     when obj.kind_of?(Hash)
       new_obj = Hash.new
       JSON.parse(obj.to_json).each do |k,v|
-        new_obj[erb_compile_with_class2(k)] = erb_compile_with_class2(v)
+        new_obj[erb_compile(k)] = erb_compile(v)
       end
       new_obj
     when obj.kind_of?(Array)
       new_obj = Array.new
-      JSON.parse(obj.to_json).each {|v| new_obj.push(erb_compile_with_class2(v)) }
+      JSON.parse(obj.to_json).each {|v| new_obj.push(erb_compile(v)) }
       new_obj
     when obj.kind_of?(String)
       values = ::OpenStruct.new({:node => self.node})
@@ -39,5 +39,5 @@ module ErbCompileWithClass2
 end
 
 [ Chef::Recipe, Chef::Mixin::Template::TemplateContext, Chef::Resource::File ].each do |klass|
-  klass.send(:include, ErbCompileWithClass2) unless klass.respond_to?('erb_compile_with_class2')
+  klass.send(:include, ErbCompile) unless klass.respond_to?('erb_compile')
 end
