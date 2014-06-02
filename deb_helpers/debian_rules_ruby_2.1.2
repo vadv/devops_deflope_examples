@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+
+export UNDEV_RUBY_RUBYGEMS_VERSION=2.0.4
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/undev-ruby.mk
+
+# в корне пакета достаточно ruby-2.1.2.tar.gz
